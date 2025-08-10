@@ -5,10 +5,26 @@ on:
   pull_request:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:12
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install PHP
+        run: |
+          apt-get update
+          apt-get install -y php8.2-cli
+      - name: Lint PHP files
+        run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
+
   test:
     runs-on: ubuntu-latest
     container:
       image: debian:12
+    strategy:
+      matrix:
+        run_codeception: [true]
     steps:
       - uses: actions/checkout@v3
       - name: Install system packages
@@ -49,9 +65,8 @@ PY
           done
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist
-      - name: Lint PHP files
-        run: find . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Run Codeception tests
+        if: matrix.run_codeception
         env:
           GO_API_BASE: http://localhost:8080/api/v1
         run: vendor/bin/codecept run Acceptance --skip-group php83
