@@ -231,9 +231,13 @@ We invite participation from:
 
 Access release packages and monitor system health using the built-in tools:
 
-- **Downloads Page**: Visit [`downloads.php`](downloads.php) for links to the latest releases and a quick overview of available REST endpoints.
+- **Downloads Page**: Visit [`downloads.php`](downloads.php) to download the latest release packages and review available REST endpoints.
 - **Control Panel**: Launch a local PHP server (`php -S localhost:8000`) and open [`reactor_control.php`](reactor_control.php) to track CPU, memory, and event metrics.
-- **API Examples**:
+- **API Endpoints**:
+  - `POST /api/v1/stargate/activate` — initiate stargate activation sequence
+  - `GET /api/v1/stargate/status` — retrieve current stargate status
+  - `POST /api/v1/stargate/deactivate` — shut down the stargate
+- **Example Commands**:
   ```bash
   # Activate the stargate
   curl -X POST http://localhost/api/v1/stargate/activate -H 'Content-Type: application/json' -d '{"destination":"EARTH-ALPHA"}'
