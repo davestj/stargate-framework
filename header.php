@@ -12,7 +12,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Stargate Framework - <?php echo ucwords(str_replace('_', ' ', $current_page)); ?></title>
 
     <!-- Shared CSS for all pages -->
