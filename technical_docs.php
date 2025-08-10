@@ -915,12 +915,17 @@ if __name__ == "__main__":
             <p>Use the auxiliary interfaces to manage releases and reactor operations.</p>
 
             <h3 id="downloads">10.1 Downloads Page</h3>
-            <p>Navigate to <a href="downloads.php">downloads.php</a> to fetch release artifacts and review available API endpoints.</p>
+            <p>Navigate to <a href="downloads.php">downloads.php</a> to download release artifacts and review available REST API endpoints.</p>
 
             <h3 id="control-panel">10.2 Control Panel</h3>
             <p>Start a local server with <code>php -S localhost:8000</code> and open <a href="reactor_control.php">reactor_control.php</a> to monitor CPU, memory, and event rates.</p>
 
             <h3 id="api-examples">10.3 API Examples</h3>
+            <ul>
+                <li><code>POST /api/v1/stargate/activate</code> – Initiate stargate activation sequence.</li>
+                <li><code>GET /api/v1/stargate/status</code> – Retrieve current stargate status.</li>
+                <li><code>POST /api/v1/stargate/deactivate</code> – Shut down the stargate.</li>
+            </ul>
             <pre><code class="language-bash">
 # Activate the stargate
 curl -X POST http://localhost/api/v1/stargate/activate -H 'Content-Type: application/json' -d '{"destination":"EARTH-ALPHA"}'
