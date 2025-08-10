@@ -64,6 +64,9 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <li class="nav-item <?php echo ($current_page == 'executive_summary_generator') ? 'active' : ''; ?>">
                     <a href="executive_summary_generator.php">Summaries</a>
                 </li>
+                <li class="nav-item <?php echo ($current_page == 'downloads') ? 'active' : ''; ?>">
+                    <a href="downloads.php">Downloads</a>
+                </li>
                 <li class="nav-item <?php echo ($current_page == 'technical_docs') ? 'active' : ''; ?>">
                     <a href="technical_docs.php">Documentation</a>
                 </li>
