@@ -4,6 +4,9 @@ namespace Tests\Acceptance;
 
 use Tests\Support\AcceptanceTester;
 
+/**
+ * @group api
+ */
 class GoApiCest
 {
     public function apiHealthCheck(AcceptanceTester $I)

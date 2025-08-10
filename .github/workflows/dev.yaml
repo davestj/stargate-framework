@@ -14,17 +14,46 @@ jobs:
       - name: Install system packages
         run: |
           apt-get update
-          apt-get install -y nginx php8.2-cli php8.2-fpm php8.2-curl php8.2-xml composer
+          apt-get install -y nginx php8.2-cli php8.2-fpm php8.2-curl php8.2-xml composer golang-go python3 curl
       - name: Configure and start services
         run: |
           sed -i "s|root /var/www/html;|root $GITHUB_WORKSPACE;|" /etc/nginx/sites-available/default
           service php8.2-fpm start
           service nginx start
+      - name: Launch ternary-fission-reactor API
+        run: |
+          git clone https://github.com/davestj/ternary-fission-reactor.git /tmp/ternary-fission-reactor
+          sed -i 's|reactor_base_url=.*|reactor_base_url=http://127.0.0.1:9999|' /tmp/ternary-fission-reactor/configs/ternary_fission.conf
+          python3 - <<'PY' &
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import json
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/api/v1/status':
+            self.send_response(200)
+            self.send_header('Content-Type','application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'active_energy_fields':0}).encode())
+        else:
+            self.send_response(404)
+            self.end_headers()
+HTTPServer(('127.0.0.1',9999), Handler).serve_forever()
+PY
+          (cd /tmp/ternary-fission-reactor && go run src/go/api.ternary.fission.server.go -port 8080 >/tmp/goapi.log 2>&1 &)
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8080/api/v1/health >/dev/null; then
+              echo 'API ready'
+              break
+            fi
+            sleep 1
+          done
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist
       - name: Lint PHP files
         run: find . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Run Codeception tests
+        env:
+          GO_API_BASE: http://localhost:8080/api/v1
         run: vendor/bin/codecept run Acceptance --skip-group php83
       - name: Check server logs for PHP warnings
         run: |
