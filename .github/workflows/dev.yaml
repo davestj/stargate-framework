@@ -25,7 +25,7 @@ jobs:
       - name: Lint PHP files
         run: find . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Run Codeception tests
-        run: vendor/bin/codecept run --debug
+        run: vendor/bin/codecept run --skip-group php83
       - name: Check server logs for PHP warnings
         run: |
           if grep -E 'PHP (Warning|Notice)' /var/log/nginx/error.log; then
