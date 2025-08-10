@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stargate Framework - Metrics & Feasibility Dashboard</title>
+    <style>
+        /* styles.css - Dashboard styling for funding presentations */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        /* Professional header */
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* KPI cards section */
+        .kpi-section {
+            padding: 2rem;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #3498db;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .kpi-card.energy { border-left-color: #e74c3c; }
+        .kpi-card.cost { border-left-color: #2ecc71; }
+        .kpi-card.timeline { border-left-color: #f39c12; }
+        .kpi-card.efficiency { border-left-color: #9b59b6; }
+
+        .kpi-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-change {
+            font-size: 0.9rem;
+            color: #2ecc71;
+        }
+
+        .kpi-change.negative {
+            color: #e74c3c;
+        }
+
+        /* Main dashboard content */
+        .dashboard-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-card h3 {
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* Chart containers */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 1rem;
+        }
+
+        .chart-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Progress bars */
+        .progress-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3498db;
+            border-radius: 5px;
+            transition: width 1s ease-out;
+        }
+
+        /* Cost breakdown table */
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .cost-table th {
+            text-align: left;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+        }
+
+        .cost-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .cost-table .total {
+            font-weight: bold;
+            background: #f8f9fa;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            margin-left: 2rem;
+            flex: 1;
+        }
+
+        .timeline-content h4 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .timeline-content p {
+            color: #7f8c8d;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: 20px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        /* ROI Calculator */
+        .calculator-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .calculator-input label {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .calculator-input input {
+            width: 150px;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .roi-result {
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .roi-result .value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation classes */
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Print styles for reports */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .dashboard-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>Stargate Framework - Investment Metrics Dashboard</h1>
+        <p>Real-time feasibility analysis and ROI projections for wormhole technology development</p>
+    </header>
+
+    <!-- Key Performance Indicators -->
+    <section class="kpi-section">
+        <div class="kpi-grid">
+            <div class="kpi-card energy animate-in">
+                <div class="kpi-label">Energy Requirement</div>
+                <div class="kpi-value" id="energy-requirement">12.5 TW</div>
+                <div class="kpi-change">↓ 15% from initial estimates</div>
+            </div>
+            
+            <div class="kpi-card cost animate-in" style="animation-delay: 0.1s">
+                <div class="kpi-label">Total Investment Needed</div>
+                <div class="kpi-value" id="total-investment">$8.2B</div>
+                <div class="kpi-change">Phase 1: $2.1B</div>
+            </div>
+            
+            <div class="kpi-card timeline animate-in" style="animation-delay: 0.2s">
+                <div class="kpi-label">Time to Prototype</div>
+                <div class="kpi-value" id="time-to-prototype">3.5y</div>
+                <div class="kpi-change">6 months ahead of schedule</div>
+            </div>
+            
+            <div class="kpi-card efficiency animate-in" style="animation-delay: 0.3s">
+                <div class="kpi-label">Energy Efficiency</div>
+                <div class="kpi-value" id="efficiency">87%</div>
+                <div class="kpi-change">↑ 12% with Base-3 optimization</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard-content">
+        <div class="dashboard-grid">
+            <!-- Development Progress -->
+            <div class="dashboard-card animate-in">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92-.46 3.64-3.32 6.53-6.96 6.96v2.02c5.5-.55 9.5-5.43 8.95-10.93-.45-4.75-4.19-8.5-8.95-8.95z"/>
+                        <path d="M11 2.03v2.02C6.61 4.59 3.5 8.58 4.04 12.97c.46 3.64 3.32 6.53 6.96 6.96v2.02C5.5 21.4 1.5 16.52 2.05 11.02 2.5 6.27 6.24 2.53 11 2.03z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    Development Progress
+                </h3>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Theoretical Framework</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 95%; background: #2ecc71;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Mathematical Validation</span>
+                        <span>88%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 88%; background: #3498db;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Prototype Design</span>
+                        <span>72%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 72%; background: #f39c12;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Material Sourcing</span>
+                        <span>45%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 45%; background: #e74c3c;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Lab Testing</span>
+                        <span>12%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 12%; background: #9b59b6;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Breakdown -->
+            <div class="dashboard-card animate-in" style="animation-delay: 0.1s">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
+                    </svg>
+                    Investment Breakdown
+                </h3>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Phase 1</th>
+                            <th>Phase 2</th>
+                            <th>Phase 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Research & Development</td>
+                            <td>$450M</td>
+                            <td>$380M</td>
+                            <td>$220M</td>
+                        </tr>
+                        <tr>
+                            <td>Materials & Components</td>
+                            <td>$620M</td>
+                            <td>$1.2B</td>
+                            <td>$890M</td>
+                        </tr>
+                        <tr>
+                            <td>Infrastructure</td>
+                            <td>$380M</td>
+                            <td>$750M</td>
+                            <td>$1.1B</td>
+                        </tr>
+                        <tr>
+                            <td>Testing & Validation</td>
+                            <td>$290M</td>
+                            <td>$410M</td>
+                            <td>$520M</td>
+                        </tr>
+                        <tr>
+                            <td>Personnel & Operations</td>
+                            <td>$360M</td>
+                            <td>$480M</td>
+                            <td>$650M</td>
+                        </tr>
+                        <tr class="total">
+                            <td>Total per Phase</td>
+                            <td>$2.1B</td>
+                            <td>$3.22B</td>
+                            <td>$3.38B</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 1rem; text-align: right;">
+                    <strong>Total Investment: $8.7B over 7 years</strong>
+                </div>
+            </div>
+
+            <!-- Energy Requirements Chart -->
+            <div class="dashboard-card animate-in" style="animation-delay: 0.2s">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/>
+                    </svg>
+                    Energy Requirements Over Time
+                </h3>
+                
+                <div class="chart-container">
+                    <canvas id="energy-chart" class="chart-canvas"></canvas>
+                </div>
+                
+                <p style="margin-top: 1rem; color: #7f8c8d;">
+                    Base-3 ternary fission reduces energy requirements by 35% compared to traditional approaches. 
+                    Peak consumption occurs during wormhole initialization, with steady-state operation requiring only 
+                    2.3 TW for Earth-Mars transit.
+                </p>
+            </div>
+
+            <!-- Development Timeline -->
+            <div class="dashboard-card animate-in" style="animation-delay: 0.3s">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                    </svg>
+                    Development Timeline
+                </h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">1</div>
+                        <div class="timeline-content">
+                            <h4>Q1 2025 - Q4 2025</h4>
+                            <p>Complete theoretical validation and secure Phase 1 funding</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">2</div>
+                        <div class="timeline-content">
+                            <h4>Q1 2026 - Q2 2027</h4>
+                            <p>Build and test Base-3 energy reactor prototype</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">3</div>
+                        <div class="timeline-content">
+                            <h4>Q3 2027 - Q4 2028</h4>
+                            <p>Develop Base-8 electromagnetic containment system</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">4</div>
+                        <div class="timeline-content">
+                            <h4>Q1 2029 - Q2 2030</h4>
+                            <p>Integrate navigation systems and conduct first portal tests</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">5</div>
+                        <div class="timeline-content">
+                            <h4>Q3 2030 - Q4 2031</h4>
+                            <p>Full system integration and human-rated testing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROI Calculator -->
+            <div class="dashboard-card animate-in" style="animation-delay: 0.4s">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                    </svg>
+                    ROI Calculator
+                </h3>
+                
+                <div class="calculator-input">
+                    <label>Cargo capacity per transit (tons):</label>
+                    <input type="number" id="cargo-capacity" value="1000" min="100" max="10000">
+                </div>
+                
+                <div class="calculator-input">
+                    <label>Cost per kg to Mars (current):</label>
+                    <input type="number" id="current-cost" value="50000" min="1000" max="100000">
+                </div>
+                
+                <div class="calculator-input">
+                    <label>Transits per year:</label>
+                    <input type="number" id="transits-per-year" value="100" min="10" max="1000">
+                </div>
+                
+                <div class="roi-result">
+                    <p>Estimated Annual Revenue:</p>
+                    <div class="value" id="annual-revenue">$5B</div>
+                    <p style="margin-top: 1rem;">Break-even in <strong id="break-even">2.8</strong> years after operations begin</p>
+                </div>
+            </div>
+
+            <!-- Market Opportunity -->
+            <div class="dashboard-card animate-in" style="animation-delay: 0.5s">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    Market Opportunity
+                </h3>
+                
+                <div class="chart-container">
+                    <canvas id="market-chart" class="chart-canvas"></canvas>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 0.5rem;">Addressable Markets:</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                            <strong>Space Logistics:</strong> $450B by 2035
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                            <strong>Interplanetary Mining:</strong> $1.2T by 2040
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                            <strong>Space Tourism:</strong> $85B by 2032
+                        </li>
+                        <li style="padding: 0.5rem 0;">
+                            <strong>Scientific Research:</strong> $230B by 2035
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // dashboard.js - Interactive metrics and calculations
+        
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // I'm setting up all the interactive elements and charts
+            initializeCharts();
+            setupCalculator();
+            animateProgressBars();
+            updateMetrics();
+        });
+        
+        function initializeCharts() {
+            // Energy Requirements Chart
+            const energyCtx = document.getElementById('energy-chart');
+            if (energyCtx) {
+                drawEnergyChart(energyCtx.getContext('2d'));
+            }
+            
+            // Market Opportunity Chart
+            const marketCtx = document.getElementById('market-chart');
+            if (marketCtx) {
+                drawMarketChart(marketCtx.getContext('2d'));
+            }
+        }
+        
+        function drawEnergyChart(ctx) {
+            const canvas = ctx.canvas;
+            const width = canvas.width = canvas.offsetWidth * 2;
+            const height = canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Chart data
+            const data = [
+                { phase: 'Initialization', energy: 12.5, color: '#e74c3c' },
+                { phase: 'Stabilization', energy: 8.3, color: '#f39c12' },
+                { phase: 'Transit', energy: 2.3, color: '#2ecc71' },
+                { phase: 'Arrival', energy: 4.1, color: '#3498db' }
+            ];
+            
+            // Calculate dimensions
+            const padding = 40;
+            const chartWidth = canvas.offsetWidth - padding * 2;
+            const chartHeight = canvas.offsetHeight - padding * 2;
+            const barWidth = chartWidth / data.length * 0.6;
+            const maxEnergy = Math.max(...data.map(d => d.energy));
+            
+            // Draw axes
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.offsetHeight - padding);
+            ctx.lineTo(canvas.offsetWidth - padding, canvas.offsetHeight - padding);
+            ctx.stroke();
+            
+            // Draw bars
+            data.forEach((item, index) => {
+                const x = padding + (index * chartWidth / data.length) + (chartWidth / data.length - barWidth) / 2;
+                const barHeight = (item.energy / maxEnergy) * chartHeight;
+                const y = canvas.offsetHeight - padding - barHeight;
+                
+                // Bar
+                ctx.fillStyle = item.color;
+                ctx.fillRect(x, y, barWidth, barHeight);
+                
+                // Value label
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(item.energy + ' TW', x + barWidth / 2, y - 10);
+                
+                // Phase label
+                ctx.font = '12px Arial';
+                ctx.fillText(item.phase, x + barWidth / 2, canvas.offsetHeight - padding + 20);
+            });
+            
+            // Y-axis labels
+            ctx.fillStyle = '#7f8c8d';
+            ctx.font = '11px Arial';
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 5; i++) {
+                const y = canvas.offsetHeight - padding - (i * chartHeight / 5);
+                const value = (maxEnergy * i / 5).toFixed(1);
+                ctx.fillText(value + ' TW', padding - 10, y + 4);
+            }
+        }
+        
+        function drawMarketChart(ctx) {
+            const canvas = ctx.canvas;
+            const width = canvas.width = canvas.offsetWidth * 2;
+            const height = canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Pie chart data
+            const data = [
+                { label: 'Space Logistics', value: 450, color: '#3498db' },
+                { label: 'Mining', value: 1200, color: '#2ecc71' },
+                { label: 'Tourism', value: 85, color: '#f39c12' },
+                { label: 'Research', value: 230, color: '#9b59b6' }
+            ];
+            
+            const total = data.reduce((sum, item) => sum + item.value, 0);
+            const centerX = canvas.offsetWidth / 2;
+            const centerY = canvas.offsetHeight / 2;
+            const radius = Math.min(centerX, centerY) - 40;
+            
+            let currentAngle = -Math.PI / 2;
+            
+            // Draw pie slices
+            data.forEach((item, index) => {
+                const sliceAngle = (item.value / total) * Math.PI * 2;
+                
+                // Draw slice
+                ctx.fillStyle = item.color;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Draw label
+                const labelAngle = currentAngle + sliceAngle / 2;
+                const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+                const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+                
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText((item.value / total * 100).toFixed(0) + '%', labelX, labelY);
+                
+                currentAngle += sliceAngle;
+            });
+            
+            // Draw center circle
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Total market value
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('$' + (total / 1000).toFixed(1) + 'T', centerX, centerY);
+            ctx.font = '12px Arial';
+            ctx.fillText('Total Market', centerX, centerY + 18);
+        }
+        
+        function setupCalculator() {
+            // I'm setting up the ROI calculator with real-time updates
+            const inputs = ['cargo-capacity', 'current-cost', 'transits-per-year'];
+            
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('input', calculateROI);
+                }
+            });
+            
+            // Initial calculation
+            calculateROI();
+        }
+        
+        function calculateROI() {
+            const capacity = parseFloat(document.getElementById('cargo-capacity').value) || 1000;
+            const currentCost = parseFloat(document.getElementById('current-cost').value) || 50000;
+            const transits = parseFloat(document.getElementById('transits-per-year').value) || 100;
+            
+            // Calculate revenue (assuming we charge 10% of current cost)
+            const ourCostPerKg = currentCost * 0.1;
+            const revenuePerTransit = capacity * 1000 * ourCostPerKg;
+            const annualRevenue = revenuePerTransit * transits;
+            
+            // Calculate break-even
+            const totalInvestment = 8700000000; // $8.7B
+            const operatingMargin = 0.6; // 60% margin
+            const netAnnualRevenue = annualRevenue * operatingMargin;
+            const breakEvenYears = totalInvestment / netAnnualRevenue;
+            
+            // Update display
+            document.getElementById('annual-revenue').textContent = '$' + (annualRevenue / 1000000000).toFixed(1) + 'B';
+            document.getElementById('break-even').textContent = breakEvenYears.toFixed(1);
+        }
+        
+        function animateProgressBars() {
+            // I'm animating the progress bars on page load
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            progressBars.forEach((bar, index) => {
+                const targetWidth = bar.style.width;
+                bar.style.width = '0%';
+                
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 100 + index * 100);
+            });
+        }
+        
+        function updateMetrics() {
+            // Simulate real-time metric updates
+            setInterval(() => {
+                // Update energy requirement with small fluctuation
+                const energyElement = document.getElementById('energy-requirement');
+                if (energyElement) {
+                    const baseValue = 12.5;
+                    const fluctuation = (Math.random() - 0.5) * 0.2;
+                    energyElement.textContent = (baseValue + fluctuation).toFixed(1) + ' TW';
+                }
+                
+                // Update efficiency
+                const efficiencyElement = document.getElementById('efficiency');
+                if (efficiencyElement) {
+                    const baseEfficiency = 87;
+                    const fluctuation = (Math.random() - 0.5) * 2;
+                    efficiencyElement.textContent = Math.floor(baseEfficiency + fluctuation) + '%';
+                }
+            }, 3000);
+        }
+        
+        // Export data functionality for reports
+        window.exportDashboardData = function() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                metrics: {
+                    energyRequirement: document.getElementById('energy-requirement').textContent,
+                    totalInvestment: document.getElementById('total-investment').textContent,
+                    timeToPrototype: document.getElementById('time-to-prototype').textContent,
+                    efficiency: document.getElementById('efficiency').textContent
+                },
+                calculator: {
+                    cargoCapacity: document.getElementById('cargo-capacity').value,
+                    currentCost: document.getElementById('current-cost').value,
+                    transitsPerYear: document.getElementById('transits-per-year').value,
+                    annualRevenue: document.getElementById('annual-revenue').textContent,
+                    breakEven: document.getElementById('break-even').textContent
+                }
+            };
+            
+            console.log('Dashboard Data Export:', data);
+            return data;
+        };
+    </script>
+</body>
+</html>

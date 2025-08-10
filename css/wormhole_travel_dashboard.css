@@ -1,0 +1,395 @@
+/**
+ * wormhole_travel_dashboard_fixed.css - Compact layout for better screen utilization
+ * Author: David (davestj)
+ * Purpose: Fix display issues by minimizing UI elements and maximizing canvas space
+ */
+
+/* Override excessive padding and margins throughout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure body doesn't add extra spacing */
+body {
+    overflow: hidden;
+    font-size: 12px; /* Reduce base font size */
+}
+
+/* Make canvas take full available space */
+#simulation-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+}
+
+/* Reduce top HUD size significantly */
+.top-hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 1rem; /* Reduced from 2rem */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.hud-header {
+    text-align: center;
+    margin-bottom: 0.5rem; /* Reduced from 2rem */
+}
+
+.hud-header h1 {
+    font-size: 1.2rem; /* Reduced from 2rem */
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 1px; /* Reduced from 2px */
+}
+
+.status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; /* Reduced from 3rem */
+    font-size: 0.7rem; /* Reduced from 0.9rem */
+}
+
+.status-item {
+    text-align: center;
+}
+
+.status-label {
+    color: #3fbac2;
+    text-transform: uppercase;
+    font-size: 0.65rem; /* Reduced from 0.8rem */
+    letter-spacing: 0.5px; /* Reduced from 1px */
+}
+
+.status-value {
+    font-size: 0.9rem; /* Reduced from 1.4rem */
+    font-weight: bold;
+    margin-top: 0.1rem; /* Reduced from 0.25rem */
+}
+
+/* Compact navigation panel */
+.nav-panel {
+    position: fixed;
+    left: 10px; /* Reduced from 2rem */
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(22, 33, 62, 0.85); /* Slightly more transparent */
+    border: 1px solid rgba(63, 186, 194, 0.3);
+    border-radius: 4px; /* Reduced from 8px */
+    padding: 0.75rem; /* Reduced from 2rem */
+    width: 220px; /* Reduced from 320px */
+    max-height: 80vh;
+    overflow-y: auto;
+    pointer-events: auto;
+    backdrop-filter: blur(5px); /* Reduced from 10px */
+    font-size: 0.75rem; /* Smaller text */
+}
+
+.nav-panel h2 {
+    color: #3fbac2;
+    margin-bottom: 0.75rem; /* Reduced from 1.5rem */
+    font-size: 1rem; /* Reduced from 1.3rem */
+}
+
+.destination-select {
+    margin-bottom: 1rem; /* Reduced from 2rem */
+}
+
+.destination-select label {
+    display: block;
+    margin-bottom: 0.25rem; /* Reduced from 0.5rem */
+    color: #a0a0a0;
+    font-size: 0.7rem; /* Reduced from 0.9rem */
+}
+
+.destination-select select {
+    width: 100%;
+    padding: 0.4rem; /* Reduced from 0.75rem */
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 3px; /* Reduced from 4px */
+    color: #fff;
+    font-size: 0.75rem; /* Reduced from 1rem */
+    cursor: pointer;
+}
+
+.destination-info {
+    background: #0d1117;
+    border-radius: 3px; /* Reduced from 4px */
+    padding: 0.5rem; /* Reduced from 1rem */
+    margin-bottom: 0.75rem; /* Reduced from 1.5rem */
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem; /* Reduced from 0.5rem */
+    font-size: 0.7rem; /* Reduced from 0.85rem */
+}
+
+.info-label {
+    color: #a0a0a0;
+}
+
+.info-value {
+    color: #3fbac2;
+}
+
+.travel-controls {
+    display: flex;
+    gap: 0.5rem; /* Reduced from 1rem */
+    margin-bottom: 0.75rem; /* Reduced from 1.5rem */
+}
+
+.control-btn {
+    flex: 1;
+    padding: 0.4rem; /* Reduced from 0.75rem */
+    border: none;
+    border-radius: 3px; /* Reduced from 4px */
+    font-size: 0.7rem; /* Reduced from 0.9rem */
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.safety-check {
+    padding: 0.5rem; /* Reduced from 1rem */
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 3px; /* Reduced from 4px */
+    margin-bottom: 0.5rem; /* Reduced from 1rem */
+    font-size: 0.7rem; /* Reduced from 0.85rem */
+}
+
+/* Compact power panel */
+.power-panel {
+    position: fixed;
+    right: 10px; /* Reduced from 2rem */
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(22, 33, 62, 0.85);
+    border: 1px solid rgba(63, 186, 194, 0.3);
+    border-radius: 4px; /* Reduced from 8px */
+    padding: 0.75rem; /* Reduced from 2rem */
+    width: 200px; /* Reduced from 280px */
+    pointer-events: auto;
+    backdrop-filter: blur(5px); /* Reduced from 10px */
+}
+
+.power-panel h2 {
+    color: #3fbac2;
+    margin-bottom: 0.75rem; /* Reduced from 1.5rem */
+    font-size: 1rem; /* Reduced from 1.3rem */
+}
+
+.power-gauge {
+    position: relative;
+    height: 120px; /* Reduced from 200px */
+    margin-bottom: 1rem; /* Reduced from 2rem */
+}
+
+.gauge-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.power-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Reduced from 1rem */
+}
+
+.power-slider {
+    margin-bottom: 0.5rem; /* Reduced from 1rem */
+}
+
+.power-slider label {
+    display: block;
+    margin-bottom: 0.25rem; /* Reduced from 0.5rem */
+    color: #a0a0a0;
+    font-size: 0.7rem; /* Reduced from 0.85rem */
+}
+
+.power-slider input[type="range"] {
+    width: 100%;
+    height: 4px; /* Reduced from 6px */
+    background: #1a1a2e;
+    outline: none;
+    border-radius: 2px; /* Reduced from 3px */
+    -webkit-appearance: none;
+}
+
+.power-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; /* Reduced from 16px */
+    height: 12px; /* Reduced from 16px */
+    background: #3fbac2;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.power-value {
+    text-align: right;
+    color: #3fbac2;
+    font-weight: bold;
+    margin-top: 0.1rem; /* Reduced from 0.25rem */
+    font-size: 0.75rem; /* Smaller font */
+}
+
+/* Minimal bottom console */
+.bottom-console {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(22, 33, 62, 0.85);
+    border-top: 1px solid rgba(63, 186, 194, 0.3);
+    padding: 0.5rem 1rem; /* Reduced from 1.5rem 2rem */
+    pointer-events: auto;
+    backdrop-filter: blur(5px); /* Reduced from 10px */
+    z-index: 10;
+}
+
+.console-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; /* Reduced from 2rem */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.console-section {
+    text-align: center;
+}
+
+.console-label {
+    color: #a0a0a0;
+    font-size: 0.65rem; /* Reduced from 0.85rem */
+    text-transform: uppercase;
+    margin-bottom: 0.25rem; /* Reduced from 0.5rem */
+}
+
+.console-value {
+    font-size: 1.1rem; /* Reduced from 1.8rem */
+    font-weight: bold;
+    color: #3fbac2;
+}
+
+.console-unit {
+    font-size: 0.7rem; /* Reduced from 0.9rem */
+    color: #a0a0a0;
+    margin-left: 0.1rem; /* Reduced from 0.25rem */
+}
+
+/* Compact view controls */
+.view-controls {
+    position: fixed;
+    bottom: 10px; /* Reduced from 2rem */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem; /* Reduced from 1rem */
+    pointer-events: auto;
+    z-index: 15;
+}
+
+.view-btn {
+    padding: 0.4rem 0.8rem; /* Reduced from 0.75rem 1.5rem */
+    background: rgba(22, 33, 62, 0.9);
+    border: 1px solid rgba(63, 186, 194, 0.3);
+    border-radius: 3px; /* Reduced from 4px */
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(5px); /* Reduced from 10px */
+    font-size: 0.75rem; /* Smaller text */
+}
+
+/* Travel overlay adjustments */
+.travel-status h2 {
+    font-size: 2rem; /* Reduced from 3rem */
+    margin-bottom: 0.5rem; /* Reduced from 1rem */
+}
+
+.travel-progress {
+    width: 300px; /* Reduced from 400px */
+    height: 6px; /* Reduced from 10px */
+    margin: 1rem auto; /* Reduced from 2rem */
+}
+
+.travel-eta {
+    font-size: 1rem; /* Reduced from 1.2rem */
+}
+
+/* Alert positioning */
+.alert {
+    top: 80px; /* Reduced from 150px */
+    padding: 0.5rem 1rem; /* Reduced from 1rem 2rem */
+    font-size: 0.8rem; /* Smaller text */
+}
+
+/* Hide scrollbars on panels for cleaner look */
+.nav-panel::-webkit-scrollbar,
+.power-panel::-webkit-scrollbar {
+    width: 3px;
+}
+
+.nav-panel::-webkit-scrollbar-thumb,
+.power-panel::-webkit-scrollbar-thumb {
+    background: rgba(63, 186, 194, 0.5);
+    border-radius: 1px;
+}
+
+/* Ensure labels don't have unnecessary spacing */
+.control-group label {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+/* Remove any default checkbox margins */
+input[type="checkbox"] {
+    margin: 0 0.25rem 0 0;
+    vertical-align: middle;
+}
+
+/* Optimize for maximum canvas visibility */
+@media (min-width: 1440px) {
+    .nav-panel {
+        left: 20px;
+    }
+
+    .power-panel {
+        right: 20px;
+    }
+}
+
+/* Further reductions for smaller screens */
+@media (max-width: 1366px) {
+    .nav-panel {
+        width: 200px;
+        padding: 0.5rem;
+    }
+
+    .power-panel {
+        width: 180px;
+        padding: 0.5rem;
+    }
+
+    .bottom-console {
+        padding: 0.4rem 0.8rem;
+    }
+
+    .console-value {
+        font-size: 1rem;
+    }
+}

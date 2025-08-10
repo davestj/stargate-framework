@@ -1,0 +1,536 @@
+/**
+ * 3d_interactive_model.css - Styles for 3D Interactive Model Viewer
+ * Author: David (davestj)
+ * Created: 2025-07-25
+ * Modified: 2025-07-28
+ * Purpose: Complete responsive styling for Stargate 3D model viewer
+ *
+ * CHANGELOG:
+ * - 2025-07-28: Complete rewrite to fix viewport containment issues
+ * - 2025-07-28: Added proper responsive breakpoints for all screen sizes
+ * - 2025-07-28: Fixed z-index layering to prevent missing elements
+ * - 2025-07-28: Implemented modern font sizing (12px standard, 14px titles, 16px headers)
+ * - 2025-07-28: Added proper overflow management and scrollable panels
+ */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main Container - We're containing everything properly */
+.model-viewer-container {
+    position: relative;
+    width: 100vw;
+    height: calc(100vh - 70px); /* Accounting for main navigation height */
+    overflow: hidden;
+    background: #000000;
+    font-family: Verdana, Arial, -apple-system, sans-serif;
+}
+
+/* Canvas Container - We're making this fill the available space */
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* UI Overlay - We're organizing all UI elements within this container */
+.ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* All UI panels allow pointer events */
+.ui-overlay > * {
+    pointer-events: auto;
+}
+
+/* Header Bar - We're positioning this at the top */
+.header-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 80%, transparent 100%);
+    text-align: center;
+    z-index: 11;
+}
+
+.header-bar h1 {
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.header-bar p {
+    font-size: 12px;
+    color: #3fbac2;
+}
+
+/* Stats Panel - We're placing this on the left */
+.stats-panel {
+    position: absolute;
+    top: 80px;
+    left: 1rem;
+    width: 220px;
+    max-height: calc(100vh - 200px);
+    background: rgba(22, 33, 62, 0.95);
+    border: 1px solid rgba(63, 186, 194, 0.3);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+    z-index: 12;
+}
+
+/* Control Panel - We're placing this on the right */
+.control-panel {
+    position: absolute;
+    top: 80px;
+    right: 1rem;
+    width: 280px;
+    max-height: calc(100vh - 200px);
+    background: rgba(22, 33, 62, 0.95);
+    border: 1px solid rgba(63, 186, 194, 0.3);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+    z-index: 12;
+}
+
+/* Panel Content - We're adding consistent padding */
+.panel-content {
+    padding: 1rem;
+}
+
+.panel-content h3 {
+    font-size: 14px;
+    color: #3fbac2;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* Stats Display - We're styling the statistics */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 12px;
+    padding: 0.25rem 0;
+}
+
+.stat-label {
+    color: #a0a0a0;
+}
+
+.stat-value {
+    color: #3fbac2;
+    font-weight: 500;
+}
+
+/* Control Groups - We're organizing form controls */
+.control-group {
+    margin-bottom: 1.25rem;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #a0a0a0;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Range Sliders - We're styling the input ranges */
+.control-group input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: #1a1a2e;
+    outline: none;
+    border-radius: 3px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #3fbac2;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb:hover {
+    width: 18px;
+    height: 18px;
+    box-shadow: 0 0 8px rgba(63, 186, 194, 0.6);
+}
+
+.control-value {
+    text-align: right;
+    margin-top: 0.25rem;
+    font-size: 12px;
+    color: #3fbac2;
+    font-weight: 500;
+}
+
+/* Toggle Groups - We're styling the button groups */
+.toggle-group {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 0.5rem 0.25rem;
+    background: #1a1a2e;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 11px;
+    font-family: Verdana, Arial, sans-serif;
+}
+
+.toggle-btn:hover {
+    background: #16213e;
+    border-color: #3fbac2;
+}
+
+.toggle-btn.active {
+    background: #3fbac2;
+    color: #0d1117;
+    border-color: #3fbac2;
+    font-weight: 500;
+}
+
+/* Checkbox Group - We're styling the checkboxes */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+/* Info Panel - We're positioning this at the bottom left */
+.info-panel {
+    position: absolute;
+    bottom: 60px;
+    left: 1rem;
+    width: 350px;
+    background: rgba(22, 33, 62, 0.95);
+    border: 1px solid rgba(63, 186, 194, 0.3);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    transform: translateY(calc(100% + 1rem));
+    transition: transform 0.3s ease;
+    z-index: 12;
+}
+
+.info-panel.show {
+    transform: translateY(0);
+}
+
+.info-panel h4 {
+    font-size: 14px;
+    color: #3fbac2;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.info-panel p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #e0e0e0;
+    margin-bottom: 0.75rem;
+}
+
+/* Specs Grid - We're organizing specifications */
+.specs {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spec-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 11px;
+}
+
+.spec-label {
+    color: #a0a0a0;
+}
+
+.spec-value {
+    color: #3fbac2;
+    font-weight: 500;
+}
+
+/* View Controls - We're centering these at the bottom */
+.view-controls {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 13;
+}
+
+.view-btn {
+    padding: 0.5rem 1rem;
+    background: rgba(22, 33, 62, 0.95);
+    border: 1px solid rgba(63, 186, 194, 0.3);
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    font-size: 12px;
+    font-family: Verdana, Arial, sans-serif;
+}
+
+.view-btn:hover {
+    background: rgba(63, 186, 194, 0.2);
+    border-color: #3fbac2;
+    transform: translateY(-2px);
+}
+
+/* Component Labels - We're managing floating labels */
+.labels-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 15;
+}
+
+.component-label {
+    position: absolute;
+    background: rgba(63, 186, 194, 0.95);
+    color: #0d1117;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.component-label.show {
+    opacity: 1;
+}
+
+.component-label::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(63, 186, 194, 0.95);
+}
+
+/* Loading Screen - We're creating a proper loading overlay */
+.loading-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0d1117;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.5s ease;
+}
+
+.loading-screen.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(63, 186, 194, 0.3);
+    border-top-color: #3fbac2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-content p {
+    font-size: 14px;
+    color: #3fbac2;
+    margin-bottom: 1rem;
+}
+
+.loading-progress {
+    width: 200px;
+    height: 4px;
+    background: rgba(63, 186, 194, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #3fbac2;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+/* Responsive Design - We're handling different screen sizes */
+@media (max-width: 1200px) {
+    .stats-panel {
+        width: 180px;
+    }
+
+    .control-panel {
+        width: 240px;
+    }
+
+    .info-panel {
+        width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* We're reorganizing for mobile devices */
+    .header-bar {
+        padding: 0.75rem 1rem;
+    }
+
+    .header-bar h1 {
+        font-size: 14px;
+    }
+
+    .header-bar p {
+        font-size: 11px;
+    }
+
+    /* We're hiding stats panel on mobile */
+    .stats-panel {
+        display: none;
+    }
+
+    /* We're making control panel a bottom sheet */
+    .control-panel {
+        top: auto;
+        bottom: 60px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-height: 50vh;
+        border-radius: 16px 16px 0 0;
+        transform: translateY(calc(100% - 60px));
+        transition: transform 0.3s ease;
+    }
+
+    .control-panel.expanded {
+        transform: translateY(0);
+    }
+
+    /* We're adding a handle for mobile drawer */
+    .control-panel::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+    }
+
+    .info-panel {
+        display: none;
+    }
+
+    .view-controls {
+        bottom: 10px;
+        gap: 0.25rem;
+    }
+
+    .view-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 11px;
+    }
+}
+
+/* Print Styles - We're optimizing for print output */
+@media print {
+    .ui-overlay,
+    .labels-container,
+    .loading-screen {
+        display: none;
+    }
+
+    .model-viewer-container {
+        height: 100vh;
+    }
+}
+
+/*
+CARRYOVER CONTEXT FOR NEXT CHAT:
+- We've completely restructured the CSS to fix viewport containment
+- Added proper responsive design for all screen sizes
+- Fixed z-index layering to prevent missing elements
+- Implemented mobile-specific UI patterns (bottom sheet for controls)
+- Next improvements could include:
+  1. Dark/light theme toggle
+  2. Accessibility improvements (ARIA labels, keyboard navigation)
+  3. Animation performance optimizations
+  4. Touch gesture support for mobile
+*/
