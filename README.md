@@ -1,5 +1,8 @@
 # Stargate Framework
 
+![Lint](https://github.com/davestj/stargate-framework/actions/workflows/dev.yaml/badge.svg?branch=main&job=lint)
+![Tests](https://github.com/davestj/stargate-framework/actions/workflows/dev.yaml/badge.svg?branch=main&job=test)
+
 **A Unified Theory for Wormhole Energy, FTL Propulsion, and Temporal Navigation Systems**
 
 ---
