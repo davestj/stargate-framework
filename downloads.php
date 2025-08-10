@@ -15,7 +15,7 @@ require_once 'header.php';
 
         <h2>GitHub Releases</h2>
         <ul class="download-list">
-            <li><a href="https://github.com/davestj/stargate-framework/releases/latest" target="_blank" rel="noopener">Latest Release</a></li>
+            <li><a href="https://github.com/davestj/ternary-fission-reactor/releases/latest" target="_blank" rel="noopener">Latest Release</a></li>
             <li><a href="https://github.com/davestj/stargate-framework/archive/refs/heads/main.zip" target="_blank" rel="noopener">Source Code (ZIP)</a></li>
             <li><a href="https://github.com/davestj/stargate-framework/archive/refs/heads/main.tar.gz" target="_blank" rel="noopener">Source Code (TAR.GZ)</a></li>
         </ul>
