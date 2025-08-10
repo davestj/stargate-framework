@@ -19,11 +19,30 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMobileMenu() {
     const menuToggle = document.getElementById('mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
-
     if (menuToggle && navMenu) {
+        const overlay = document.createElement('div');
+        overlay.className = 'nav-overlay';
+        document.body.appendChild(overlay);
+
+        function closeMenu() {
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            }
+        }
+
         menuToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
+            const isOpen = navMenu.classList.toggle('active');
             this.classList.toggle('active');
+            overlay.classList.toggle('active', isOpen);
+            document.body.classList.toggle('menu-open', isOpen);
 
             // Toggle menu icon
             const icon = this.querySelector('i');
@@ -36,18 +55,12 @@ function initMobileMenu() {
             }
         });
 
+        overlay.addEventListener('click', closeMenu);
+
         // Close menu when clicking outside
         document.addEventListener('click', function(e) {
             if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                navMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', 'false');
-
-                const icon = menuToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.add('fa-bars');
-                    icon.classList.remove('fa-times');
-                }
+                closeMenu();
             }
         });
     }
