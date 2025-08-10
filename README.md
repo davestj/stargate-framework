@@ -16,6 +16,7 @@
 - [Safety Protocols](#safety-protocols)
 - [Collaboration Opportunities](#collaboration-opportunities)
 - [Documentation](#documentation)
+- [Downloads & Control Panel](#downloads--control-panel)
 - [Contributing](#contributing)
 - [Research Team](#research-team)
 - [License](#license)
@@ -223,6 +224,28 @@ We invite participation from:
 - Engineering blueprints and schematics
 - Material property analyses
 - Safety protocol documentation
+
+---
+
+## Downloads & Control Panel
+
+Access release packages and monitor system health using the built-in tools:
+
+- **Downloads Page**: Visit [`downloads.php`](downloads.php) for links to the latest releases and a quick overview of available REST endpoints.
+- **Control Panel**: Launch a local PHP server (`php -S localhost:8000`) and open [`reactor_control.php`](reactor_control.php) to track CPU, memory, and event metrics.
+- **API Examples**:
+  ```bash
+  # Activate the stargate
+  curl -X POST http://localhost/api/v1/stargate/activate -H 'Content-Type: application/json' -d '{"destination":"EARTH-ALPHA"}'
+
+  # Check stargate status
+  curl http://localhost/api/v1/stargate/status
+
+  # Deactivate the stargate
+  curl -X POST http://localhost/api/v1/stargate/deactivate
+  ```
+
+For full installation and reactor operation guides, see the [ternary-fission-reactor](https://github.com/davestj/ternary-fission-reactor) repository.
 
 ---
 
