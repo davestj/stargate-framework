@@ -74,11 +74,11 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <li class="nav-item <?php echo ($current_page == 'executive_summary_generator') ? 'active' : ''; ?>">
                     <a href="executive_summary_generator.php"><i class="nav-icon fas fa-file-alt" aria-hidden="true"></i>Summaries</a>
                 </li>
-                <li class="nav-item <?php echo ($current_page == 'downloads') ? 'active' : ''; ?>">
-                    <a href="downloads.php"><i class="nav-icon fas fa-download" aria-hidden="true"></i>Downloads</a>
-                </li>
                 <li class="nav-item <?php echo ($current_page == 'technical_docs') ? 'active' : ''; ?>">
                     <a href="technical_docs.php"><i class="nav-icon fas fa-book" aria-hidden="true"></i>Documentation</a>
+                </li>
+                <li class="nav-item <?php echo ($current_page == 'downloads') ? 'active' : ''; ?>">
+                    <a href="downloads.php"><i class="nav-icon fas fa-download" aria-hidden="true"></i>Downloads</a>
                 </li>
             </ul>
         </div>
