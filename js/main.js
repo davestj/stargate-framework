@@ -6,17 +6,17 @@
 
 // I'm initializing the main JavaScript functionality when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
-    initSecondaryMenu();
+    initMobileMenu();
     initSmoothScrolling();
     initPageTransitions();
     checkScreenSize();
 });
 
 /**
- * Secondary navigation toggle functionality
- * This handles the hamburger menu for additional navigation links
+ * Mobile navigation toggle functionality
+ * Handles the off-canvas drawer for additional navigation links
  */
-function initSecondaryMenu() {
+function initMobileMenu() {
     const menuToggle = document.getElementById('nav-secondary-toggle');
     const navMenu = document.querySelector('.nav-secondary');
     if (menuToggle && navMenu) {
