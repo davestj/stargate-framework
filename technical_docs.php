@@ -63,7 +63,14 @@ require_once 'header.php';
                 <li><a href="#integration">7. System Integration</a></li>
                 <li><a href="#materials">8. Materials & Construction</a></li>
                 <li><a href="#safety">9. Safety Protocols</a></li>
-                <li><a href="#implementation">10. Implementation Guide</a></li>
+                <li>
+                    <a href="#implementation">10. Implementation Guide</a>
+                    <ul>
+                        <li><a href="#downloads">10.1 Downloads Page</a></li>
+                        <li><a href="#control-panel">10.2 Control Panel</a></li>
+                        <li><a href="#api-examples">10.3 API Examples</a></li>
+                    </ul>
+                </li>
                 <li><a href="#api-reference">11. API Reference</a></li>
                 <li><a href="#troubleshooting">12. Troubleshooting</a></li>
             </ul>
@@ -902,13 +909,50 @@ if __name__ == "__main__":
             </div>
         </section>
         
+        <!-- Implementation Guide -->
+        <section id="implementation" class="doc-section">
+            <h2>10. Implementation Guide</h2>
+            <p>Use the auxiliary interfaces to manage releases and reactor operations.</p>
+
+            <h3 id="downloads">10.1 Downloads Page</h3>
+            <p>Navigate to <a href="downloads.php">downloads.php</a> to download release artifacts and review available REST API endpoints.</p>
+
+            <h3 id="control-panel">10.2 Control Panel</h3>
+            <p>Start a local server with <code>php -S localhost:8000</code> and open <a href="reactor_control.php">reactor_control.php</a> to monitor CPU, memory, and event rates.</p>
+
+            <h3 id="api-examples">10.3 API Examples</h3>
+            <ul>
+                <li><code>POST /api/v1/stargate/activate</code> – Initiate stargate activation sequence.</li>
+                <li><code>GET /api/v1/stargate/status</code> – Retrieve current stargate status.</li>
+                <li><code>POST /api/v1/stargate/deactivate</code> – Shut down the stargate.</li>
+            </ul>
+            <pre><code class="language-bash">
+# Activate the stargate
+curl -X POST http://localhost/api/v1/stargate/activate -H 'Content-Type: application/json' -d '{"destination":"EARTH-ALPHA"}'
+
+# Check stargate status
+curl http://localhost/api/v1/stargate/status
+
+# Deactivate the stargate
+curl -X POST http://localhost/api/v1/stargate/deactivate
+            </code></pre>
+
+            <p>For comprehensive installation and reactor usage guides, see the <a href="https://github.com/davestj/ternary-fission-reactor" target="_blank" rel="noopener">ternary-fission-reactor</a> repository.</p>
+        </section>
+
         <!-- API Reference -->
         <section id="api-reference" class="doc-section">
             <h2>11. API Reference</h2>
             <p>Complete API documentation for integrating with the Stargate control systems.</p>
-            
+
+            <ul class="api-list">
+                <li><code>POST /api/v1/stargate/activate</code> – Initiate stargate activation sequence.</li>
+                <li><code>GET /api/v1/stargate/status</code> – Retrieve current stargate status.</li>
+                <li><code>POST /api/v1/stargate/deactivate</code> – Shutdown active stargate.</li>
+            </ul>
+
             <div class="api-endpoint">
-                <h3>POST /api/stargate/activate</h3>
+                <h3>POST /api/v1/stargate/activate</h3>
                 <p>Initiates stargate activation sequence</p>
                 
                 <h4>Request Body</h4>

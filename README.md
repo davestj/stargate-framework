@@ -1,5 +1,8 @@
 # Stargate Framework
 
+![Lint](https://github.com/davestj/stargate-framework/actions/workflows/dev.yaml/badge.svg?branch=main&job=lint)
+![Tests](https://github.com/davestj/stargate-framework/actions/workflows/dev.yaml/badge.svg?branch=main&job=test)
+
 **A Unified Theory for Wormhole Energy, FTL Propulsion, and Temporal Navigation Systems**
 
 ---
@@ -16,6 +19,7 @@
 - [Safety Protocols](#safety-protocols)
 - [Collaboration Opportunities](#collaboration-opportunities)
 - [Documentation](#documentation)
+- [Downloads & Control Panel](#downloads--control-panel)
 - [Contributing](#contributing)
 - [Research Team](#research-team)
 - [License](#license)
@@ -223,6 +227,32 @@ We invite participation from:
 - Engineering blueprints and schematics
 - Material property analyses
 - Safety protocol documentation
+
+---
+
+## Downloads & Control Panel
+
+Access release packages and monitor system health using the built-in tools:
+
+- **Downloads Page**: Visit [`downloads.php`](downloads.php) to download the latest release packages and review available REST endpoints.
+- **Control Panel**: Launch a local PHP server (`php -S localhost:8000`) and open [`reactor_control.php`](reactor_control.php) to track CPU, memory, and event metrics.
+- **API Endpoints**:
+  - `POST /api/v1/stargate/activate` — initiate stargate activation sequence
+  - `GET /api/v1/stargate/status` — retrieve current stargate status
+  - `POST /api/v1/stargate/deactivate` — shut down the stargate
+- **Example Commands**:
+  ```bash
+  # Activate the stargate
+  curl -X POST http://localhost/api/v1/stargate/activate -H 'Content-Type: application/json' -d '{"destination":"EARTH-ALPHA"}'
+
+  # Check stargate status
+  curl http://localhost/api/v1/stargate/status
+
+  # Deactivate the stargate
+  curl -X POST http://localhost/api/v1/stargate/deactivate
+  ```
+
+For full installation and reactor operation guides, see the [ternary-fission-reactor](https://github.com/davestj/ternary-fission-reactor) repository.
 
 ---
 

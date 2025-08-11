@@ -1,0 +1,19 @@
+name: Dev CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:12
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install PHP
+        run: |
+          apt-get update
+          apt-get install -y php8.2-cli
+      - name: Lint PHP files
+        run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
