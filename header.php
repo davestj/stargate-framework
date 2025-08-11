@@ -40,8 +40,11 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <div class="nav-container">
             <div class="nav-brand">
                 <a href="index.php">
-                    <h1>Stargate Framework</h1>
-                    <span class="tagline">Beyond The Horizon Labs</span>
+                    <i class="nav-icon fas fa-atom" aria-hidden="true"></i>
+                    <span class="brand-text">
+                        <h1>Stargate Framework</h1>
+                        <span class="tagline">Beyond The Horizon Labs</span>
+                    </span>
                 </a>
             </div>
 
