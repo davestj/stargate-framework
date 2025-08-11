@@ -1,8 +1,4 @@
 {
-    "require-dev": {
-        "phpunit/php-text-template": "<5.0",
-        "phpunit/phpunit": "^9.6"
-    },
     "config": {
         "platform": {
             "php": "8.2"
