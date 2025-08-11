@@ -1,8 +1,5 @@
 {
     "require-dev": {
-        "codeception/codeception": "^5.0",
-        "codeception/module-phpbrowser": "*",
-        "codeception/module-asserts": "*",
         "phpunit/php-text-template": "<5.0",
         "phpunit/phpunit": "^9.6"
     },
