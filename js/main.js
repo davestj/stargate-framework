@@ -6,19 +6,19 @@
 
 // I'm initializing the main JavaScript functionality when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
-    initMobileMenu();
+    initSecondaryMenu();
     initSmoothScrolling();
     initPageTransitions();
     checkScreenSize();
 });
 
 /**
- * Mobile menu toggle functionality
- * This handles the hamburger menu for tablet and mobile devices
+ * Secondary navigation toggle functionality
+ * This handles the hamburger menu for additional navigation links
  */
-function initMobileMenu() {
-    const menuToggle = document.getElementById('mobile-menu-toggle');
-    const navMenu = document.querySelector('.nav-menu');
+function initSecondaryMenu() {
+    const menuToggle = document.getElementById('nav-secondary-toggle');
+    const navMenu = document.querySelector('.nav-secondary');
     if (menuToggle && navMenu) {
         const overlay = document.createElement('div');
         overlay.className = 'nav-overlay';
