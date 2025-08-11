@@ -73,9 +73,17 @@ body {
     min-height: 70px;
 }
 
+
 .nav-brand a {
     text-decoration: none;
     color: var(--text-light);
+    display: flex;
+    align-items: center;
+}
+
+.nav-brand .brand-text {
+    display: flex;
+    flex-direction: column;
 }
 
 .nav-brand h1 {
@@ -129,11 +137,13 @@ body {
     white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
 }
 
-.nav-item a .nav-icon {
+.nav-icon {
     color: inherit;
+    margin-right: 0.5rem;
+    display: inline-flex;
+    align-items: center;
 }
 
 .nav-item a:hover,
