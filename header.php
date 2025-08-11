@@ -45,7 +45,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 </a>
             </div>
 
-            <ul class="nav-menu" id="nav-menu">
+            <ul class="nav-menu nav-primary" id="nav-primary">
                 <li class="nav-item <?php echo ($current_page == 'index') ? 'active' : ''; ?>">
                     <a href="index.php"><i class="nav-icon fas fa-home" aria-hidden="true"></i>Overview</a>
                 </li>
@@ -58,6 +58,13 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <li class="nav-item <?php echo ($current_page == '3d_interactive_model') ? 'active' : ''; ?>">
                     <a href="3d_interactive_model.php"><i class="nav-icon fas fa-cube" aria-hidden="true"></i>3D Model</a>
                 </li>
+            </ul>
+
+            <button class="nav-secondary-toggle" id="nav-secondary-toggle" aria-label="Toggle navigation" aria-controls="nav-secondary" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-menu nav-secondary" id="nav-secondary">
                 <li class="nav-item <?php echo ($current_page == 'wormhole_travel_dashboard') ? 'active' : ''; ?>">
                     <a href="wormhole_travel_dashboard.php"><i class="nav-icon fas fa-rocket" aria-hidden="true"></i>Simulator</a>
                 </li>
@@ -74,11 +81,6 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                     <a href="technical_docs.php"><i class="nav-icon fas fa-book" aria-hidden="true"></i>Documentation</a>
                 </li>
             </ul>
-
-            <!-- Mobile menu toggle -->
-            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation" aria-controls="nav-menu" aria-expanded="false">
-                <i class="fas fa-bars"></i>
-            </button>
         </div>
     </nav>
 
