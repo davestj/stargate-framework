@@ -18,12 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 function initMobileMenu() {
     const menuToggle = document.getElementById('nav-secondary-toggle');
-    const navMenu = document.querySelector('.nav-secondary');
+    const navMenu = document.getElementById('nav-secondary');
     if (menuToggle && navMenu) {
         let overlay = null;
 
         function openMenu() {
             navMenu.classList.add('active');
+            navMenu.setAttribute('aria-hidden', 'false');
             menuToggle.classList.add('active');
             menuToggle.setAttribute('aria-expanded', 'true');
             document.body.classList.add('menu-open');
@@ -42,6 +43,7 @@ function initMobileMenu() {
 
         function closeMenu() {
             navMenu.classList.remove('active');
+            navMenu.setAttribute('aria-hidden', 'true');
             menuToggle.classList.remove('active');
             menuToggle.setAttribute('aria-expanded', 'false');
             document.body.classList.remove('menu-open');

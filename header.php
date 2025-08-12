@@ -48,7 +48,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 </a>
             </div>
 
-            <ul class="nav-menu nav-primary" id="nav-primary">
+            <ul class="nav-menu nav-primary" id="nav-primary" aria-label="Primary navigation">
                 <li class="nav-item <?php echo ($current_page == 'index') ? 'active' : ''; ?>">
                     <a href="index.php"><i class="nav-icon fas fa-home" aria-hidden="true"></i>Overview</a>
                 </li>
@@ -67,7 +67,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
 
-            <ul class="nav-menu nav-secondary" id="nav-secondary">
+            <ul class="nav-menu nav-secondary" id="nav-secondary" aria-hidden="true">
                 <li class="nav-item <?php echo ($current_page == 'wormhole_travel_dashboard') ? 'active' : ''; ?>">
                     <a href="wormhole_travel_dashboard.php"><i class="nav-icon fas fa-rocket" aria-hidden="true"></i>Simulator</a>
                 </li>
