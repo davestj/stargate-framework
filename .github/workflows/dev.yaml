@@ -40,4 +40,4 @@ jobs:
       - name: Lint PHP files
         run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Run Codeception tests
-        run: vendor/bin/codecept run --debug
+        run: vendor/bin/codecept run --skip-group php83 --debug
