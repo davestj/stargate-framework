@@ -5,10 +5,28 @@ on:
   pull_request:
 
 jobs:
-  test:
+  lint:
+    name: PHP Lint
     runs-on: ubuntu-latest
     container:
       image: debian:12
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install PHP CLI
+        run: |
+          apt-get update
+          apt-get install -y php8.2-cli
+      - name: Lint PHP files
+        run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    container:
+      image: debian:12
+    strategy:
+      matrix:
+        run-codeception: [true]
     steps:
       - uses: actions/checkout@v3
       - name: Install system packages
@@ -55,7 +73,7 @@ jobs:
           exit 1
       - name: Composer install
         run: composer install
-      - name: Lint PHP files
-        run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Run Codeception tests
+        if: matrix.run-codeception
         run: vendor/bin/codecept run acceptance --skip-group php83
+
