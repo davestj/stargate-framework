@@ -14,7 +14,7 @@ jobs:
       - name: Install system packages
         run: |
           apt-get update
-          apt-get install -y nginx php8.2-cli php8.2-fpm php8.2-curl php8.2-xml composer
+          apt-get install -y nginx php8.2-cli php8.2-fpm php8.2-curl php8.2-xml composer curl golang
       - name: Configure and start services
         run: |
           cat <<CONF > /etc/nginx/sites-available/default
@@ -35,6 +35,24 @@ jobs:
           CONF
           service php8.2-fpm start
           service nginx start
+      - name: Start Go API
+        run: |
+          git clone --depth 1 https://github.com/davestj/ternary-fission-reactor.git
+          cd ternary-fission-reactor/src/go
+          cat <<'EOF' > ../../configs/test.conf
+          api_port=8080
+          ssl_enabled=false
+          EOF
+          go run api.ternary.fission.server.go -config ../../configs/test.conf &
+      - name: Wait for Go API
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8080/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
       - name: Composer install
         run: composer install
       - name: Lint PHP files
