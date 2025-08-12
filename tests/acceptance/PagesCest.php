@@ -1,5 +1,5 @@
 <?php
-class SiteCest
+class PagesCest
 {
     public function _before()
     {
