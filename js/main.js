@@ -20,16 +20,37 @@ function initMobileMenu() {
     const menuToggle = document.getElementById('nav-secondary-toggle');
     const navMenu = document.querySelector('.nav-secondary');
     if (menuToggle && navMenu) {
-        const overlay = document.createElement('div');
-        overlay.className = 'nav-overlay';
-        document.body.appendChild(overlay);
+        let overlay = null;
+
+        function openMenu() {
+            navMenu.classList.add('active');
+            menuToggle.classList.add('active');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('menu-open');
+
+            overlay = document.createElement('div');
+            overlay.className = 'nav-overlay';
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', closeMenu);
+
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.add('fa-times');
+                icon.classList.remove('fa-bars');
+            }
+        }
 
         function closeMenu() {
             navMenu.classList.remove('active');
             menuToggle.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.classList.remove('menu-open');
             menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('menu-open');
+
+            if (overlay) {
+                overlay.removeEventListener('click', closeMenu);
+                document.body.removeChild(overlay);
+                overlay = null;
+            }
 
             const icon = menuToggle.querySelector('i');
             if (icon) {
@@ -39,23 +60,13 @@ function initMobileMenu() {
         }
 
         menuToggle.addEventListener('click', function() {
-            const isOpen = navMenu.classList.toggle('active');
-            this.classList.toggle('active');
-            overlay.classList.toggle('active', isOpen);
-            document.body.classList.toggle('menu-open', isOpen);
-
-            // Toggle menu icon
-            const icon = this.querySelector('i');
-            const expanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-
-            if (icon) {
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
+            const isOpen = navMenu.classList.contains('active');
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
             }
         });
-
-        overlay.addEventListener('click', closeMenu);
 
         // Close menu when clicking outside
         document.addEventListener('click', function(e) {
