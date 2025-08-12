@@ -19,7 +19,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
     <link rel="stylesheet" href="css/main.css">
 
     <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <!-- Page-specific CSS -->
     <?php if(file_exists("css/{$current_page}.css")): ?>
@@ -63,8 +63,8 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 </li>
             </ul>
 
-            <button class="nav-secondary-toggle" id="nav-secondary-toggle" aria-label="Toggle navigation" aria-controls="nav-secondary" aria-expanded="false">
-                <i class="fas fa-bars"></i>
+            <button class="nav-secondary-toggle" id="nav-secondary-toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-secondary" aria-expanded="false" aria-haspopup="true">
+                <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
 
             <ul class="nav-menu nav-secondary" id="nav-secondary">
