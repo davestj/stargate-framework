@@ -1,14 +1,7 @@
 {
-    "config": {
-        "platform": {
-            "php": "8.2"
-        }
-    },
-    "require-dev": {
-        "codeception/codeception": "^5.0",
-        "codeception/module-asserts": "^3.0",
-        "codeception/module-phpbrowser": "^3.0",
-        "phpunit/php-text-template": "<5.0",
-        "phpunit/phpunit": "^9.6"
+  "config": {
+    "platform": {
+      "php": "8.2"
     }
+  }
 }

@@ -1,6 +1,0 @@
-actor: AcceptanceTester
-modules:
-  enabled:
-    - PhpBrowser:
-        url: http://localhost
-    - \Helper\Acceptance
