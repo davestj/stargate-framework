@@ -32,7 +32,8 @@ jobs:
       - name: Install system packages
         run: |
           apt-get update
-          apt-get install -y nginx php8.2-cli php8.2-fpm php8.2-curl php8.2-xml composer curl golang
+          apt-get install -y nginx php8.2-cli php8.2-fpm php8.2-curl \
+            php8.2-xml composer curl golang
       - name: Configure and start services
         run: |
           cat <<CONF > /etc/nginx/sites-available/default
@@ -55,13 +56,31 @@ jobs:
           service nginx start
       - name: Start Go API
         run: |
-          git clone --depth 1 https://github.com/davestj/ternary-fission-reactor.git
-          cd ternary-fission-reactor/src/go
+          git clone --depth 1 \
+            https://github.com/davestj/ternary-fission-reactor.git \
+            /tmp/ternary-fission-reactor
+          cd /tmp/ternary-fission-reactor/src/go
           cat <<'EOF' > ../../configs/test.conf
           api_port=8080
           ssl_enabled=false
           EOF
           go run api.ternary.fission.server.go -config ../../configs/test.conf &
+      - name: Start mock Reactor
+        run: |
+          sed -i \
+            's|reactor_base_url=.*|reactor_base_url=http://127.0.0.1:9999|' \
+            /tmp/ternary-fission-reactor/configs/ternary_fission.conf
+          python3 - <<'PY' &
+            from http.server import BaseHTTPRequestHandler, HTTPServer
+            import json
+            class Handler(BaseHTTPRequestHandler):
+                def do_GET(self):
+                    self.send_response(200)
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'status': 'ok'}).encode())
+            HTTPServer(('127.0.0.1',9999), Handler).serve_forever()
+          PY
       - name: Wait for Go API
         run: |
           for i in {1..30}; do
@@ -76,4 +95,3 @@ jobs:
       - name: Run Codeception tests
         if: matrix.run-codeception
         run: vendor/bin/codecept run acceptance --skip-group php83
-
