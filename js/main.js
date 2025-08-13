@@ -20,7 +20,9 @@ function initMobileMenu() {
     const menuToggle = document.getElementById('nav-secondary-toggle');
     const navMenu = document.getElementById('nav-secondary');
     if (menuToggle && navMenu) {
-        let overlay = null;
+        const overlay = document.createElement('div');
+        overlay.className = 'nav-overlay';
+        document.body.appendChild(overlay);
 
         function openMenu() {
             navMenu.classList.add('active');
@@ -28,11 +30,7 @@ function initMobileMenu() {
             menuToggle.classList.add('active');
             menuToggle.setAttribute('aria-expanded', 'true');
             document.body.classList.add('menu-open');
-
-            overlay = document.createElement('div');
-            overlay.className = 'nav-overlay';
-            document.body.appendChild(overlay);
-            overlay.addEventListener('click', closeMenu);
+            overlay.classList.add('active');
 
             const icon = menuToggle.querySelector('i');
             if (icon) {
@@ -47,12 +45,7 @@ function initMobileMenu() {
             menuToggle.classList.remove('active');
             menuToggle.setAttribute('aria-expanded', 'false');
             document.body.classList.remove('menu-open');
-
-            if (overlay) {
-                overlay.removeEventListener('click', closeMenu);
-                document.body.removeChild(overlay);
-                overlay = null;
-            }
+            overlay.classList.remove('active');
 
             const icon = menuToggle.querySelector('i');
             if (icon) {
@@ -70,12 +63,7 @@ function initMobileMenu() {
             }
         });
 
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                closeMenu();
-            }
-        });
+        overlay.addEventListener('click', closeMenu);
     }
 }
 
