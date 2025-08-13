@@ -80,6 +80,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <li class="nav-item <?php echo ($current_page == 'technical_docs') ? 'active' : ''; ?>">
                     <a href="technical_docs.php"><i class="nav-icon fas fa-book" aria-hidden="true"></i>Documentation</a>
                 </li>
+                <!-- Downloads moved to secondary navigation for slide-out menu -->
                 <li class="nav-item <?php echo ($current_page == 'downloads') ? 'active' : ''; ?>">
                     <a href="downloads.php"><i class="nav-icon fas fa-download" aria-hidden="true"></i>Downloads</a>
                 </li>
