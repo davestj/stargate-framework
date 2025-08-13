@@ -40,7 +40,9 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <div class="nav-container">
             <div class="nav-brand">
                 <a href="index.php">
-                    <i class="nav-icon fas fa-atom" aria-hidden="true"></i>
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2l3 6.5 7 .8-5 4.8 1.5 7L12 17.5 5.5 21l1.5-7-5-4.8 7-.8L12 2z" />
+                    </svg>
                     <span class="brand-text">
                         <h1>Stargate Framework</h1>
                         <span class="tagline">Beyond The Horizon Labs</span>
@@ -64,7 +66,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             </ul>
 
             <button class="nav-secondary-toggle" id="nav-secondary-toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-secondary" aria-expanded="false" aria-haspopup="true">
-                <i class="fas fa-bars" aria-hidden="true"></i>
+                <i class="nav-icon fas fa-bars" aria-hidden="true"></i>
             </button>
 
             <ul class="nav-menu nav-secondary" id="nav-secondary" aria-hidden="true">

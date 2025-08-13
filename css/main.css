@@ -79,6 +79,7 @@ body {
     color: var(--text-light);
     display: flex;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .nav-brand .brand-text {
@@ -124,6 +125,7 @@ body {
 
 .nav-icon {
     color: inherit;
+    fill: currentColor;
     display: inline-flex;
     align-items: center;
 }
